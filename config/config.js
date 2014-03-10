@@ -64,7 +64,7 @@ exports.loginServer = {
 //   be more than one line of messages.
 //   This feature can lag larger servers - turn this off if your server is
 //   getting more than 80 or so users.
-exports.reportJoins = true;
+exports.reportJoins = false;
 
 // report battles - shows messages like "OU battle started" in the lobby
 //   This feature can lag larger servers - turn this off if your server is
@@ -100,7 +100,7 @@ exports.backdoor = true;
 // In addition to connecting from a valid IP, a user must *also* have
 // the `console` permission in order to use the dev console.
 // Setting this to an empty array ([]) will disable the dev console.
-exports.consoleIps = ['127.0.0.1', 'blakjack' ];
+exports.consoleIps = ['127.0.0.1', 'blakjack'];
 
 // Whether to watch the config file for changes. If this is enabled,
 // then the config.js file will be reloaded when it is changed.
