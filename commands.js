@@ -2168,6 +2168,9 @@ target = this.splitTarget(target);
 	roomvoice: function(target, room, user) {
 		return this.parse('/roompromote ' + target + ', +');
 	},
+	roomdeauth: function(target, room, user) {
+		return this.parse('/roomdemote ' + target + ', deauth');
+	},
 
 	modchat: function(target, room, user) {
 		if (!target) return this.sendReply("Moderated chat is currently set to: " + room.modchat);
