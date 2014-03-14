@@ -1792,17 +1792,7 @@ target = this.splitTarget(target);
 		this.send('|c|'+targetUser.name+'|'+target);
 	},
 
-	breaklink: 'unlink',
-	unlink: function(target, room, user) {
-		if (!this.can('ban')) return false;
-		target = this.splitTarget(target);
-		var targetUser = this.targetUser;
-		var alts = targetUser.getAlts();
-		if (!targetUser)  return this.sendReply('Specify who\'s links to unlink!'); 
-		if (alts.get) room.add('|unlink|'+alts);
-		this.send('|unlink|'+targetUser+'');
-		this.privateModCommand(targetUser.name+'\'s links have been removed.')
-	},
+
 
 	/*********************************************************
 	 * Moderating: Punishments
