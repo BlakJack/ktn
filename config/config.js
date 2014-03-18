@@ -178,6 +178,7 @@ exports.customAvatars = {
           'siiilver': 'siiilver.png',
           'aflaffy': 'aflaffy.gif',
           'magmacmdrflarity': 'magma1.png',
+          'avada': 'avada.gif',
 };
 
 // appealUri - specify a URI containing information on how users can appeal
