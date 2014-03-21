@@ -281,7 +281,7 @@ exports.groups = {
 			description: "They Can give rooms and make room owners",
 			inherit: '&',
 			jurisdiction: '@u',
-			makechatroom: true,
+			makeroom: true,
 			roomowner: true,
 			roommod: true,
 			roomdriver: true,
