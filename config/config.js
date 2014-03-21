@@ -276,6 +276,18 @@ exports.groups = {
 			root: true
 		},
 		'&': {
+			id: 'rooms',
+			name: 'Rooms',
+			description: "They Can give rooms and make room owners",
+			inherit: '&',
+			jurisdiction: '@u',
+			makechatroom: true,
+			roomowner: true,
+			roommod: true,
+			roomdriver: true,
+			roomvoice: true,
+		},
+		'&': {
 			id: 'leader',
 			name: "Leader",
 			description: "They can promote to moderator and force ties",
