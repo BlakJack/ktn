@@ -1147,6 +1147,11 @@ var commands = exports.commands = {
 	 	if (!this.canBroadcast()) return;
 	 	this.sendReplyBox('<img src="http://pldh.net/media/pokemon/ken_sugimori/update_bw/646-black.png"><img src="http://i.imgur.com/MWzPDNe.gif"><img src="http://pldh.net/media/sugimori/373.png"><br><center><font color="black">Ace:</font><blink><font color="lightblue"> Salamence and Kyurem-B</blink></font><br><i><font color="darkblue">Do you think Messi is awesome? Then im more awesome cus i have a 10 in front of it.');
 	},
+	
+	avada: function(target, room, user) {  
+	 	if (!this.canBroadcast()) return;
+	 	this.sendReplyBox('<center><img src="http://fc07.deviantart.net/fs70/f/2013/121/a/1/shadow_lugia_sprite_by_pokedan1-d63sjcf.png"><br><img src="http://fc03.deviantart.net/fs42/f/2009/158/2/3/Shadow_Lugia_Sprite_by_Agirl3003.png"><img src="http://s10.postimg.org/ih3nnrcll/cooltext1487828506.png"><img src="http://img-cache.cdn.gaiaonline.com/f987b8387b2c162d53317c35338e21e1/http://i103.photobucket.com/albums/m128/angletic_light/Shadow_Lugia_HGSS_Sprite_by_Quanyails.gif"><br><font color="blue"><blink>Ace: Shadow Lugia</blink><br><font color="blue">Expect The Unexpected.');
+	},
   	
   	arjunb: function(target, room, user) {
   		if (!this.canBroadcast()) return;
