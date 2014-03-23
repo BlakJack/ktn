@@ -443,4 +443,10 @@ fs.readFile('./logs/uptime.txt', function (err, uptime) {
 });
 global.spamroom = {};
 global.bot = require('./stuff/chatbot/bot.js').bot();
+global.stuff = require('./stuff/stuff.js').stuff();
 global.tour = require('./tour.js').tour();
+try {
+	global.hangman = require('./hangman.js').hangman();
+} catch (e) {
+	console.log('Error loading hangman.js');
+}
