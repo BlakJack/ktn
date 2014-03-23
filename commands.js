@@ -1575,7 +1575,7 @@ target = this.splitTarget(target);
 		if (currentGroup === nextGroup) {
 			return this.sendReply("User '" + name + "' is already a " + groupName + " in this room.");
 		}
-		if (!user.can('makeroom')) {
+		if (!user.can('roomowner')) {
 			if (!user.can('roompromote', currentGroup, room)) {
 				return this.sendReply("/" + cmd + " - Access denied for removing " + (config.groups.bySymbol[currentGroup].name || "regular user") + ".");
 			}
