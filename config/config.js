@@ -293,12 +293,12 @@ exports.groups = {
 		},
 		'#': {
 			id: 'owner',
-			name: "Room Owner",
+			name: "Owner",
 			description: "They are administrators of the room and can almost totally control it",
 			inherit: '@',
 			jurisdiction: 'u',
 			declare: true,
-			roompromote: true,
+			roomowner: true,
 			modchatall: true,
 			roomdesc: true,
 			roompromote: 'u'
