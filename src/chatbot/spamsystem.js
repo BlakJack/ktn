@@ -1,4 +1,8 @@
 exports.canTalk = function (user, room, connection, message) {
+	if(spamphase === 0) {
+		return true;
+	}
+	else if(spamphase === 1) {
     global.today = new Date();
     if ((today.getMinutes() - user.o3omessagetime) < 0) {
         user.o3omessagetime = today.getMinutes();
@@ -99,4 +103,6 @@ exports.canTalk = function (user, room, connection, message) {
         room.add('|html|<font color="#FF00BF">' + user.name + ' was warned by ' + '<i><b>' + bot.name + '</b>(caps)</i></font>');
         user.send('|c|~|/warn caps');
     }
+	} 
+	//else if(spamphase == 2){}
 };
