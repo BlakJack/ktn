@@ -1,25 +1,26 @@
 exports.canTalk = function (user, room, connection, message) {
-	if(spamphase === 0) {
-		return true;
-	}
-	else if(spamphase === 1) {
-    global.today = new Date();
-    if ((today.getMinutes() - user.o3omessagetime) < 0) {
+	global.today = new Date();
+	if ((today.getMinutes() - user.o3omessagetime) < 0) {
         user.o3omessagetime = today.getMinutes();
     }
     if ((today.getMinutes() - user.o3omessagetime) > 1 || (today.getMinutes() - user.o3omessagetime) === 1) {
         user.o3omessagetime = today.getMinutes();
         user.numMessages = 0;
     }
+	if(spamphase === 0) {
+		return true;
+	}
+	else if(spamphase === 1) {
     user.numMessages += 1;
-
-    if (bot.BannedStuff(message) === true) {
+    var filter = ['meat spin', 'meatspin','pornhub','porn hub','4chan.org','xxx.com','420yolo','spamspam','cum','cumshot','nigger','snen snen','cock','c0ck','anal'];
+	for (var i=0;i<filter.length;i++) {
+    if (message.indexOf(filter[i]) > -1) {
         user.lock();
         room.add('|html|<font color="#FF00BF"><i><b>' + bot.name + '</b> locked ' + user.name + '(somthing bad :P).</i></font>');
         return false;
     }
-	
-    if (user.numMessages == 12) {
+}
+    if (user.numMessages == 15) {
         user.mute(room.id, 7 * 60 * 1000);
         room.add('|html|<font color="#FF00BF"><i><b>' + bot.name + '</b> has muted ' + user.name + ' for 7 minutes(flood).</i></font>');
         user.o3omessagetime = today.getMinutes();
@@ -59,19 +60,36 @@ exports.canTalk = function (user, room, connection, message) {
         connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
         return false;
         user.warnCounters += 1;
-        room.add('|html|<font color="#FF00BF">' + user.name + ' was warned by ' + '<i><b>' + bot.name + '</b>(advertising)</i></font>');
-        user.send('|c|~|/warn advertising');
     }
 
     if (message.toLowerCase().indexOf("play.pokemonshowdown.com") > -1) {
         connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
         return false;
-        user.warnCounters += 1;
-        room.add('|html|<font color="#FF00BF">' + user.name + ' was warned by ' + '<i><b>' + bot.name + '</b>(advertising)</i></font>');
-        user.send('|c|~|/warn advertising');
     }
 
     if (message.toLowerCase().indexOf("psim") > -1) {
+        connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
+        return false;
+    }
+    if (message.toLowerCase().indexOf("ps im") > -1) {
+        connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
+        return false;
+    }
+    if (message.toLowerCase().indexOf("psi m") > -1) {
+        connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
+        return false;
+    }
+    if (message.toLowerCase().indexOf("p sim") > -1) {
+        connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
+        return false;
+    }
+    if (message.toLowerCase().indexOf(".prism") > -1) {
+        connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
+        return false;
+    }
+	} 
+	else if(spamphase == 2) {
+	if (message.toLowerCase().indexOf("psim") > -1) {
         connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
         return false;
         user.warnCounters += 1;
@@ -102,7 +120,31 @@ exports.canTalk = function (user, room, connection, message) {
         user.warnCounters += 1;
         room.add('|html|<font color="#FF00BF">' + user.name + ' was warned by ' + '<i><b>' + bot.name + '</b>(caps)</i></font>');
         user.send('|c|~|/warn caps');
+    }	
+    if (user.numMessages == 10) {
+        user.mute(room.id, 7 * 60 * 1000);
+        room.add('|html|<font color="#FF00BF"><i><b>' + bot.name + '</b> has muted ' + user.name + ' for 7 minutes(flood).</i></font>');
+        user.o3omessagetime = today.getMinutes();
+        user.numMessages = 0;
+        return false;
     }
-	} 
-	//else if(spamphase == 2){}
+    if (bot.spammers.indexOf(user.userid) > -1) {
+        spamroom[user.userid] = true;
+        return false;
+    }
+    	if (user.warnCounters > 3) {
+        room.add('|html|<font color="#FF00BF">' + user.name + ' was muted by ' + '<i><b>' + bot.name + '</b>(more than 4 warnings)</i></font>');
+        user.mute(room.id, 60 * 60 * 1000, true);
+        return false;
+    }
+    var filter = ['meat spin', 'meatspin','pornhub','porn hub','4chan.org','xxx.com','420yolo','spamspam','cum','cumshot','nigger','snen snen','cock','c0ck','anal'];
+	for (var i=0;i<filter.length;i++) {
+    if (message.indexOf(filter[i]) > -1) {
+        user.lock();
+        room.add('|html|<font color="#FF00BF"><i><b>' + bot.name + '</b> locked ' + user.name + '(somthing bad :P).</i></font>');
+        return false;
+    }
+}
+	}
+
 };
