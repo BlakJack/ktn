@@ -1100,7 +1100,9 @@ var User = (function () {
 				room.onJoinConnection(this, connection);
 			}
 		}
-		room.add('|raw|<b> * <font color="' + Color.hashColor(this.name) + '">' + this.name + '</font> has join the room.</b>');
+		if(this.named) {
+		room.add('|raw|<b> * <font color="' + Color.hashColor(this.name) + '">' + this.name + '</font> has joined the room.</b>');
+		}
 		return true;
 	};
 	User.prototype.leaveRoom = function(room, connection, force) {
