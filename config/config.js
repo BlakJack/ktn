@@ -141,7 +141,8 @@ exports.herokuhack = false;
 // displayed in the client.
 exports.customavatars = {
 	bandi: 'bandi.gif',
-	creaturephil: 'birkal.gif'
+	creaturephil: 'birkal.gif',
+	ficette: 'flicette.gif'
 };
 
 // appealurl - specify a URL containing information on how users can appeal
