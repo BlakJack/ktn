@@ -1,7 +1,7 @@
-exports.serverId = 'Nova'
+exports.serverId = 'nova'
 
 // The server port - the port to run Pokemon Showdown under
-exports.port = 8000;
+exports.port = 5000;
 
 // proxyip - proxy IPs with trusted X-Forwarded-For headers
 //   This can be either false (meaning not to trust any proxies) or an array
