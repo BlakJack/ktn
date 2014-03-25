@@ -635,7 +635,7 @@ var cmds = {
 };
 
 for (var i in cmds) CommandParser.commands[i] = cmds[i];
-
+Users.User.prototype.twitchAccess = true;
 exports.Source = Source;
 exports.Profile = Profile;
 exports.Twitch = Twitch;
