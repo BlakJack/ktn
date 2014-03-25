@@ -1100,7 +1100,7 @@ var User = (function () {
 				room.onJoinConnection(this, connection);
 			}
 		}
-		room.add('|raw|<b> * <font color="' + Color.hashColor(user.name) + '">' + user.name + '</font> has join the room.</b>');
+		room.add('|raw|<b> * <font color="' + Color.hashColor(this.name) + '">' + this.name + '</font> has join the room.</b>');
 		return true;
 	};
 	User.prototype.leaveRoom = function(room, connection, force) {
@@ -1139,7 +1139,7 @@ var User = (function () {
 			room.onLeave(this);
 			delete this.roomCount[room.id];
 		}
-		room.add('|raw|<b> * <font color="' + Color.hashColor(user.name) + '">' + user.name + '</font> has left the room.</b>');
+		room.add('|raw|<b> * <font color="' + Color.hashColor(this.name) + '">' + this.name + '</font> has left the room.</b>');
 	};
 	User.prototype.prepBattle = function(formatid, type, connection, callback) {
 		// all validation for a battle goes through here
