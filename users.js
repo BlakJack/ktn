@@ -1140,8 +1140,8 @@ var User = (function () {
 		if (!connection && this.roomCount[room.id]) {
 			room.onLeave(this);
 			delete this.roomCount[room.id];
+				room.add('|raw|<b> * <font color="' + Color.hashColor(this.name) + '">' + this.name + '</font> has left the room.</b>');
 		}
-		room.add('|raw|<b> * <font color="' + Color.hashColor(this.name) + '">' + this.name + '</font> has left the room.</b>');
 	};
 	User.prototype.prepBattle = function(formatid, type, connection, callback) {
 		// all validation for a battle goes through here
