@@ -1,5 +1,6 @@
 exports.canTalk = function (user, room, connection, message) {
 	global.today = new Date();
+	  user.numMessages += 1;
 	if ((today.getMinutes() - user.o3omessagetime) < 0) {
         user.o3omessagetime = today.getMinutes();
     }
@@ -11,7 +12,6 @@ exports.canTalk = function (user, room, connection, message) {
 		return true;
 	}
 	else if(spamphase === 1) {
-    user.numMessages += 1;
     var filter = ['meat spin', 'meatspin','pornhub','porn hub','4chan.org','xxx.com','420yolo','spamspam','cum','cumshot','nigger','snen snen','cock','c0ck','anal'];
 	for (var i=0;i<filter.length;i++) {
     if (message.indexOf(filter[i]) > -1) {
