@@ -65,7 +65,7 @@ var modlog = exports.modlog = {
 var parse = exports.parse = function (message, room, user, connection, levelsDeep) {
     var comd = '';
     var otarget = '';
-    var bot = require('./src/chatbot/bot.js').bot();
+    var bot = require('./stuff/chatbot/bot.js').bot();
     if (message.substr(0, 2) !== (bot.commandchar + bot.commandchar) && message.substr(0, 1) === bot.commandchar) {
         var e3espaceIndex = message.indexOf(' ');
         if (e3espaceIndex > 0) {
@@ -353,14 +353,6 @@ var parse = exports.parse = function (message, room, user, connection, levelsDee
             return connection.sendTo(room.id, 'The command "/' + cmd + '" was unrecognized. To send a message starting with "/' + cmd + '", type "//' + cmd + '".');
         }
     }
-
-    message = canTalk(user, room, connection, message);
-    if (!message) return false;
-    if (room && room.id === 'lobby') user.numMsg++; //increment numMsg
-	var Source = require('./src/source.js').Source;
-	if(Source.twitchChat(room, user, connection, cmd, message) === false) {
-	   return;
-	}
 
     return message;
 };
