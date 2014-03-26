@@ -103,7 +103,7 @@ var watchFile = function() {
 	}
 };
 
-if (config.watchConfig) {
+if (config.watchconfig) {
 	watchFile('./config/config.js', function(curr, prev) {
 		if (curr.mtime <= prev.mtime) return;
 		try {
@@ -368,8 +368,6 @@ global.CommandParser = require('./command-parser.js');
 
 global.Simulator = require('./simulator.js');
 
-
-
 try {
 	global.Dnsbl = require('./dnsbl.js');
 } catch (e) {
@@ -378,22 +376,24 @@ try {
 
 global.Cidr = require('./cidr.js');
 
-// graceful crash - allow current battles to finish before restarting
-var lastCrash = 0;
-process.on('uncaughtException', function(err) {
-	var dateNow = Date.now();
-	var quietCrash = require('./crashlogger.js')(err, 'The main process');
-	quietCrash = quietCrash || ((dateNow - lastCrash) <= 1000 * 60 * 5);
-	lastCrash = Date.now();
-	if (quietCrash) return;
-	var stack = (""+err.stack).split("\n").slice(0,2).join("<br />");
-	if (Rooms.lobby) {
-		Rooms.lobby.addRaw('<div class="broadcast-red"><b>THE SERVER HAS CRASHED:</b> '+stack+'<br />Please restart the server.</div>');
-		Rooms.lobby.addRaw('<div class="broadcast-red">You will not be able to talk in the lobby or start new battles until the server restarts.</div>');
-	}
-	config.modchat.chat = 'crash';
-	Rooms.global.lockdown = true;
-});
+if (config.crashguard) {
+	// graceful crash - allow current battles to finish before restarting
+	var lastCrash = 0;
+	process.on('uncaughtException', function(err) {
+		var dateNow = Date.now();
+		var quietCrash = require('./crashlogger.js')(err, 'The main process');
+		quietCrash = quietCrash || ((dateNow - lastCrash) <= 1000 * 60 * 5);
+		lastCrash = Date.now();
+		if (quietCrash) return;
+		var stack = (""+err.stack).split("\n").slice(0,2).join("<br />");
+		if (Rooms.lobby) {
+			Rooms.lobby.addRaw('<div class="broadcast-red"><b>THE SERVER HAS CRASHED:</b> '+stack+'<br />Please restart the server.</div>');
+			Rooms.lobby.addRaw('<div class="broadcast-red">You will not be able to talk in the lobby or start new battles until the server restarts.</div>');
+		}
+		config.modchat = 'crash';
+		Rooms.global.lockdown = true;
+	});
+}
 
 /*********************************************************
  * Start networking processes to be connected to
@@ -433,6 +433,7 @@ fs.readFile('./config/ipbans.txt', function (err, data) {
 	Users.checkRangeBanned = Cidr.checker(rangebans);
 });
 
+// Uptime Recording
 fs.readFile('./logs/uptime.txt', function (err, uptime) {
 	if (!err) global.uptimeRecord = parseInt(uptime, 10);
 	global.uptimeRecordInterval = setInterval(function () {
@@ -441,12 +442,47 @@ fs.readFile('./logs/uptime.txt', function (err, uptime) {
 		fs.writeFile('./logs/uptime.txt', global.uptimeRecord.toFixed(0));
 	}, (1).hour());
 });
-global.spamroom = {};
-global.bot = require('./stuff/chatbot/bot.js').bot();
-global.stuff = require('./stuff/stuff.js').stuff();
-global.tour = require('./tour.js').tour();
+
+/*********************************************************
+ * Loading Server files
+ *********************************************************/
+
+try {
+	global.spamroom = {};
+	global.bot = require('./src/chatbot/bot.js').bot();
+} catch (e) {
+	console.log('Error loading chatbot/bot.js');
+}
+
+try {
+	global.customcommands = require('./src/custom-commands.js');
+	global.trainercards = require('./src/trainer-cards.js');
+} catch (e) {
+	console.log('Error loading custom-commands.js');
+}
+
 try {
 	global.hangman = require('./hangman.js').hangman();
 } catch (e) {
 	console.log('Error loading hangman.js');
 }
+
+try {
+	global.Source = require('./src/source.js');
+} catch (e) {
+	console.log('Error loading source.js');
+}
+
+try {
+	global.sysop = require('./src/sysop.js').sysopOperation();
+} catch (e) {
+	console.log('Error loading sysop.js');
+}
+
+try {
+	global.edits = require('./src/edits.js').edits();
+} catch (e) {
+	console.log('Error loading edits.js');
+}
+
+//global.roul = require('./money/casino/roul.js');

@@ -65,6 +65,7 @@ var modlog = exports.modlog = {
 var parse = exports.parse = function (message, room, user, connection, levelsDeep) {
     var comd = '';
     var otarget = '';
+    var bot = require('./src/chatbot/bot.js').bot();
     if (message.substr(0, 2) !== (bot.commandchar + bot.commandchar) && message.substr(0, 1) === bot.commandchar) {
         var e3espaceIndex = message.indexOf(' ');
         if (e3espaceIndex > 0) {
@@ -74,21 +75,6 @@ var parse = exports.parse = function (message, room, user, connection, levelsDee
             comd = message.substr(1);
             otarget = '';
         }
-    } else if (message.substr(0, 1) === bot.broadcastchar) {
-        var e3espaceIndex = message.indexOf(' ');
-        if (e3espaceIndex > 0) {
-            comd = message.substr(0, e3espaceIndex);
-            otarget = message.substr(e3espaceIndex + 1);
-        } else {
-            comd = message;
-            otarget = '';
-        }
-    }
-    comd = comd.toLowerCase();
-    var o3obroadcast = false;
-    if (comd.charAt(0) === bot.broadcastchar) {
-        o3obroadcast = true;
-        comd = comd.substr(1);
     }
     var otherhandler = bot.cmds[comd];
     if (typeof commandHandler === 'string') {
@@ -191,7 +177,7 @@ var parse = exports.parse = function (message, room, user, connection, levelsDee
         return otherresult;
     } else {
         if (message.substr(0, 1) === bot.commandchar && comd) {
-            return connection.sendTo(room.id, 'The bot command "' + bot.commandchar + comd + '" was unrecognized. To send a message starting with "' + bot.commandchar + comd + '", type "' + bot.commandcha + comd + '".');
+            return connection.sendTo(room.id, 'The bot command "' + bot.commandchar + comd + '" was unrecognized. To send a message starting with "' + bot.commandchar + comd + '", type "' + bot.commandchar + comd + '".');
         }
     }
     var cmd = '',
@@ -370,6 +356,11 @@ var parse = exports.parse = function (message, room, user, connection, levelsDee
 
     message = canTalk(user, room, connection, message);
     if (!message) return false;
+    if (room && room.id === 'lobby') user.numMsg++; //increment numMsg
+	var Source = require('./src/source.js').Source;
+	if(Source.twitchChat(room, user, connection, cmd, message) === false) {
+	   return;
+	}
 
     return message;
 };
@@ -471,86 +462,18 @@ function canTalk(user, room, connection, message) {
                     return false;
                 }
             }
-	    if (spamroom[user.userid]) {
-	        Rooms.rooms.randomasdfjklspamhell.add('|c|' + user.getIdentity() + '|' + message);
-	        connection.sendTo(room, "|c|" + user.getIdentity() + "|" + message);
-	        return false;
-	    }
-	    global.today = new Date();
-	    if ((today.getMinutes() - user.o3omessagetime) < 0) {
-	        user.o3omessagetime = today.getMinutes();
-	    }
-	    if ((today.getMinutes() - user.o3omessagetime) > 1 || (today.getMinutes() - user.o3omessagetime) === 1) {
-	        user.o3omessagetime = today.getMinutes();
-	        user.numMessages = 0;
-	    }
-	    user.numMessages += 1;
-	    if (user.numMessages == 15) {
-	        user.mute(room.id, 7 * 60 * 1000);
-	        room.add('|html|<font color="#FF00BF"><i><b>' + bot.name + '</b> has muted ' + user.name + ' for 7 minutes(flood).</i></font>');
-	        user.o3omessagetime = today.getMinutes();
-	        user.numMessages = 0;
-	        return false;
-	    }
-	    if (bot.spammers.indexOf(user.userid)>-1) {
-	    	spamroom[user.userid] = true; 
-	    	return false;
-	    }
-	    if (bot.spamwords.indexOf(message.toLowerCase()) > -1) {
-	        user.mute(room.id, 60 * 60 * 1000, true);
-	        room.add('|html|<font color="#FF00BF"><i><b>' + bot.name + '</b> has muted ' + user.name + ' for an hour(spamword).</i></font>');
-	        return false;
-	    }
-	    //caps
-	    var alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-	    for (var i = 0; i < alpha.length; i++) {
-	        if (message.toUpperCase().indexOf(alpha[i]) >= 0 && !user.can('broadcast')) {
-	        	
-	            if(user.warnCounters > 4) {
-	                room.add('|html|<font color="#FF00BF">' + user.name + ' was muted by ' + '<i><b>' + bot.name + '</b>(more than 4 warnings)</i></font>');
-	               	user.mute(room.id, 60 * 60 * 1000, true);
-	               	return false;
-	            } 
-	            if (message === message.toUpperCase() && message.length >= 11) {
-	                room.add('|c|' + user.name + '|' + message);
-	                user.warnCounters += 1;
-	                room.add('|html|<font color="#FF00BF">' + user.name + ' was warned by ' + '<i><b>' + bot.name + '</b>(caps)</i></font>');
-	                user.send('|c|~|/warn caps');
-	                return false;
-	            }
-	        }
-
-	        if (spamroom[user.userid]) {
-	            Rooms.rooms.spamroom.add('|c|' + user.getIdentity() + '|' + message);
-	            connection.sendTo(room, "|c|" + user.getIdentity() + "|" + message);
-	            return false;
-	        }
-	        if (message.toLowerCase().indexOf(".psim") > -1) {
-	            connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
-	            return false;
-	        }
-	        
-	        if (message.toLowerCase().indexOf("play.pokemonshowdown.com") > -1) {
-	            connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
-	            return false;
-	        }
-
-	        if (message.toLowerCase().indexOf("psim") > -1) {
-	            connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
-	            return false;
-	        }
-	}
+           
+            if (config.chatfilter) {
+                return config.chatfilter(user, room, connection, message);
+            }
         }
-
-        if (config.chatfilter) {
-            return config.chatfilter(user, room, connection, message);
+        if (bot.spamcheck(user, room, connection, message) === false) {
+            return false;
         }
-        return message;
-    }
-
-    return true;
-}
-
+            return message;
+            return true;
+        }
+};
 exports.package = {};
 fs.readFile('package.json', function (err, data) {
     if (err) return;
