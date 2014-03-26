@@ -467,12 +467,12 @@ function canTalk(user, room, connection, message) {
                 return config.chatfilter(user, room, connection, message);
             }
         }
-        if (bot.spamcheck(user, room, connection, message) === false) {
+        /*if (bot.spamcheck(user, room, connection, message) === false) {
             return false;
         }
             return message;
             return true;
-        }
+        }*/
 };
 exports.package = {};
 fs.readFile('package.json', function (err, data) {
