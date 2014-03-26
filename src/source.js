@@ -1,9 +1,13 @@
 /**
  * Welcome to source.js!
+ * Created by CreaturePhil
  * 
  * source.js is a Pokemon Showdown modded API for custom servers.
+ * Currently it holds modules* for Standard Streams,
+ * Twitch Chat Implementation, and emoticons.
  * 
- * Currently it is in alpha.
+ * *Module - A portion of a program that carries out a specific function and 
+ * may be used alone or combined with other modules of the same program.
  *
  * @license MIT license
  */
@@ -202,7 +206,7 @@
 			message = Source.escapeHTML(message);
 			message = Twitch.replaceEmoticons(message);
 			
-			if(message.indexOf('static-cdn') >= 0){
+			if(message.indexOf('static-cdn') >= 0 || message.indexOf('e.deviantart.net/emoticons') >= 0){
 				room.add('|raw|<div class="chat"><strong><small>'+user.group+'</small><font color="'+Color.hashColor(user.name)+'"><span class="username" data-name="'+user.name+'">'+user.name+':</font></span></strong> <em class="mine">'+message+' </em></div>');
 				return false;
 			}
@@ -275,7 +279,6 @@ var Twitch = {
 				'R)': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-0536d670860bf733-24x18.png',
 				':D': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-9f2ac5d4b53913d7-24x18.png',
 				':z': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-b9cbb6884788aa62-24x18.png',
-				'<3': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-577ade91d46d7edc-24x18.png',
 				'BloodTrail': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-f124d3a96eff228a-41x28.png',
 				'BibleThump': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-f6c13c7fc0a5c93d-36x30.png',
 				'4Head': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-76292ac622b0fc38-20x30.png',
@@ -283,7 +286,19 @@ var Twitch = {
 				'PogChamp': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-60aa1af305e32d49-23x30.png',
 				'ResidentSleeper': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-1ddcc54d77fc4a61-28x28.png',
 				'crtNova': 'http://static-cdn.jtvnw.net/jtv_user_pictures/emoticon-3227-src-77d12eca2603dde0-28x28.png',
-				'crtSSoH': 'http://static-cdn.jtvnw.net/jtv_user_pictures/emoticon-3228-src-d4b613767d7259c4-28x28.png'
+				'crtSSoH': 'http://static-cdn.jtvnw.net/jtv_user_pictures/emoticon-3228-src-d4b613767d7259c4-28x28.png',
+				'KappaHD': 'http://static-cdn.jtvnw.net/jtv_user_pictures/emoticon-2867-src-f02f9d40f66f0840-28x28.png',
+				'SSSsss': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-5d019b356bd38360-24x24.png',
+				'SwiftRage': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-680b6b3887ef0d17-21x28.png',
+				'DansGame': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ce52b18fccf73b29-25x32.png',
+				'Kreygasm': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-3a624954918104fe-19x27.png',
+				'FailFish': 'http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-c8a77ec0c49976d3-22x30.png',
+				'pikaQQ': 'http://static-cdn.jtvnw.net/jtv_user_pictures/emoticon-10413-src-9e30fb4e8b42c21a-28x28.png',
+				':ninja:': 'http://e.deviantart.net/emoticons/n/ninja.gif',
+				':katana:': 'http://e.deviantart.net/emoticons/k/katana.gif',
+				':ninjabattle:': 'http://e.deviantart.net/emoticons/n/ninjabattle.gif',
+				':meditate:': 'http://e.deviantart.net/emoticons/n/ninjameditate.gif',
+				':hump:': 'http://e.deviantart.net/emoticons/h/hump.gif'
 			}, patterns = [], metachars = /[[\]{}()*+?.\\|^$\-,&#\s]/g;
 
 			// build a regex pattern for each defined property
@@ -441,102 +456,6 @@ var cmds = {
 		}
 	},
 	
-	givemoney: function(target, room, user) {
-		if(!user.can('lockdown')) return this.sendReply('/givemoney - Access denied.');
-		if(!target) return this.sendReply('|raw|Give money to a user. Usage: /givemoney <i>username</i>, <i>amount</i>');
-		if (target.indexOf(',') >= 0) {
-			var parts = target.split(',');
-			parts[0] = this.splitTarget(parts[0]);
-			var targetUser = this.targetUser;
-		}
-		if (!targetUser) {
-			return this.sendReply('User '+this.targetUsername+' not found.');
-		}
-		if (isNaN(parts[1])) {
-			return this.sendReply('Very funny, now use a real number.');
-		}
-		if (parts[1] < 0) {
-			return this.sendReply('Number cannot be negative.');
-		}
-		var p = 'PokeDollars';
-		var cleanedUp = parts[1].trim();
-		var giveMoney = Number(cleanedUp);
-		if (giveMoney === 1) {
-			p = 'PokeDollar';
-		}
-		Source.stdoutNumber('source-data/money.csv', user, 'money', giveMoney);
-		this.sendReply(targetUser.name + ' was given ' + giveMoney + ' ' + p + '. This user now has ' + targetUser.money + ' pokedollars.');
-		targetUser.send(user.name + ' has given you ' + giveMoney + ' ' + p + '.');
-		fs.appendFile('logs/transactions.log','\n'+Date()+': '+targetUser.name+' was given '+giveMoney+' '+p+' from ' + user.name + '. ' + 'They now have '+targetUser.money + ' ' + p + '.');
-	},
-
-	takemoney: function(target, room, user) {
-		if(!user.can('lockdown')) return this.sendReply('/takemoney - Access denied.');
-		if(!target) return this.sendReply('|raw|Take away from a user. Usage: /takemoney <i>username</i>, <i>amount</i>');
-		if (target.indexOf(',') >= 0) {
-			var parts = target.split(',');
-			parts[0] = this.splitTarget(parts[0]);
-			var targetUser = this.targetUser;
-		}
-		if (!targetUser) {
-			return this.sendReply('User '+this.targetUsername+' not found.');
-		}
-		if (isNaN(parts[1])) {
-			return this.sendReply('Very funny, now use a real number.');
-		}
-		if (parts[1] < 0) {
-			return this.sendReply('Number cannot be negative.');
-		}
-		var p = 'PokeDollars';
-		var cleanedUp = parts[1].trim();
-		var takeMoney = Number(cleanedUp);
-		if (takeMoney === 1) {
-			p = 'PokeDollar';
-		}
-		Source.stdoutNumber('source-data/money.csv', user, 'money', -takeMoney);
-		this.sendReply(targetUser.name + ' has had ' + takeMoney + ' ' + p + ' removed. This user now has ' + targetUser.money + ' ' + p + '.');
-		targetUser.send(user.name + ' has removed ' + takeMoney + ' ' +  p + ' from you.');
-		fs.appendFile('logs/transactions.log','\n'+Date()+': '+targetUser.name+' losted '+takeMoney+' '+p+' from ' + user.name + '. ' + 'They now have '+targetUser.money + ' ' + p + '.');
-	},
-	
-	transfermoney: function(target, room, user) {
-		if(!target) return this.sendReply('|raw|Transfer money between users. Usage: /transfermoney <i>username</i>, <i>amount</i>');
-		if (target.indexOf(',') >= 0) {
-			var parts = target.split(',');
-			if (parts[0].toLowerCase() === user.name.toLowerCase()) {
-				return this.sendReply('You can\'t transfer money to yourself.');
-			}
-			parts[0] = this.splitTarget(parts[0]);
-			var targetUser = this.targetUser;
-		}
-		if (!targetUser) {
-			return this.sendReply('User '+this.targetUsername+' not found.');
-		}
-		if (isNaN(parts[1])) {
-			return this.sendReply('Very funny, now use a real number.');
-		}
-		if (parts[1] < 0) {
-			return this.sendReply('Number cannot be negative.');
-		}
-		if (String(parts[1]).indexOf('.') >= 0) {
-			return this.sendReply('You cannot transfer money with decimals.');
-		}
-		if (parts[1] > user.money) {
-			return this.sendReply('You cannot transfer more money than what you have.');
-		}
-		var p = 'PokeDollars';
-		var cleanedUp = parts[1].trim();
-		var transferMoney = Number(cleanedUp);
-		if (transferMoney === 1) {
-			p = 'PokeDollar';
-		}
-		Source.stdoutNumber('source-data/money.csv', user, 'money', -transferMoney);
-		//set time delay because of node asynchronous so it will update both users' money instead of either updating one or the other
-		setTimeout(function(){Source.stdoutNumber('source-data/money.csv', targetUser, 'money', transferMoney);fs.appendFile('logs/transactions.log','\n'+Date()+': '+user.name+' has transferred '+transferMoney+' '+p+' to ' + targetUser.name + '. ' +  user.name +' now has '+user.money + ' ' + p + ' and ' + targetUser.name + ' now has ' + targetUser.money +' ' + p +'.');},3000);
-		this.sendReply('You have successfully transferred ' + transferMoney + ' to ' + targetUser.name + '. You now have ' + user.money + ' ' + p + '.');
-		targetUser.send(user.name + ' has transferred ' + transferMoney + ' ' +  p + ' to you.');
-	},
-	
 	setlocation: 'location',
 	location: function(target, room, user){
 		if (!target) return this.sendReply('|raw|Set your location for profile. Usage: /location <i>location information</i>');
@@ -635,7 +554,7 @@ var cmds = {
 };
 
 for (var i in cmds) CommandParser.commands[i] = cmds[i];
-Users.User.prototype.twitchAccess = true;
+
 exports.Source = Source;
 exports.Profile = Profile;
 exports.Twitch = Twitch;
