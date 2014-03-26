@@ -141,7 +141,7 @@ exports.herokuhack = false;
 // displayed in the client.
 exports.customavatars = {
 	bandi: 'bandi.gif',
-	creaturephil: 'birkal.gif',
+	creaturephil: 'creaturephil.gif',
 	ficette: 'flicette.gif'
 };
 
