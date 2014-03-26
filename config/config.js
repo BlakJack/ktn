@@ -1,14 +1,17 @@
-exports.serverId = 'nova'
-
 // The server port - the port to run Pokemon Showdown under
 exports.port = 5000;
 
-// proxyip - proxy IPs with trusted X-Forwarded-For headers
+// The server id - the id specified in the server registration.
+//   This should be set properly especially when there are more than one
+//   pokemon showdown server running from the same IP
+exports.serverId = 'nova';
+
+// proxyIps - proxy IPs with trusted X-Forwarded-For headers
 //   This can be either false (meaning not to trust any proxies) or an array
 //   of strings. Each string should be either an IP address or a subnet given
 //   in CIDR notation. You should usually leave this as `false` unless you
 //   know what you are doing.
-exports.proxyip = false;
+exports.proxyIps = false;
 
 // Pokemon of the Day - put a pokemon's name here to make it Pokemon of the Day
 //   The PotD will always be in the #2 slot (not #1 so it won't be a lead)
