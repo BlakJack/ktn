@@ -1100,9 +1100,6 @@ var User = (function () {
 				room.onJoinConnection(this, connection);
 			}
 		}
-		if(this.named) {
-		room.add('|raw|<b> * <font color="' + Color.hashColor(this.name) + '">' + this.name + '</font> has joined the room.</b>');
-		}
 		return true;
 	};
 	User.prototype.leaveRoom = function(room, connection, force) {
@@ -1140,7 +1137,6 @@ var User = (function () {
 		if (!connection && this.roomCount[room.id]) {
 			room.onLeave(this);
 			delete this.roomCount[room.id];
-				room.add('|raw|<b> * <font color="' + Color.hashColor(this.name) + '">' + this.name + '</font> has left the room.</b>');
 		}
 	};
 	User.prototype.prepBattle = function(formatid, type, connection, callback) {
