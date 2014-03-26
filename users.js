@@ -319,7 +319,6 @@ var User = (function () {
 		this.status = '';
 		this.statusTime = '';
 		this.twitchGroup = '';
-		this.twitchAccess = false;
 	}
 
 	User.prototype.isSysop = false;
