@@ -3,7 +3,7 @@
  * Pokemon Showdown - http://pokemonshowdown.com/
  *
  * This is the command parser. Call it with CommandParser.parse
- * (scroll down to its definition for details)
+ * (scroll down to its definition for details)h
  *
  * Individual commands are put in:
  *   commands.js - "core" commands that shouldn't be modified
@@ -470,7 +470,7 @@ function canTalk(user, room, connection, message) {
                     return false;
                 }
             }
-<<<<<<< HEAD
+
            
             if (config.chatfilter) {
                 return config.chatfilter(user, room, connection, message);
@@ -483,7 +483,7 @@ function canTalk(user, room, connection, message) {
             return true;
         }*/
 };
-=======
+
 	    if (spamroom[user.userid]) {
 	        Rooms.rooms.randomasdfjklspamhell.add('|c|' + user.getIdentity() + '|' + message);
 	        connection.sendTo(room, "|c|" + user.getIdentity() + "|" + message);
@@ -564,7 +564,6 @@ function canTalk(user, room, connection, message) {
     return true;
 }
 
->>>>>>> parent of 6e402e2... ALL CREDITS TO BANDI, CREATUREPHIL AND IFAZE
 exports.package = {};
 fs.readFile('package.json', function (err, data) {
     if (err) return;
