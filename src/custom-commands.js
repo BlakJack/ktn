@@ -669,7 +669,8 @@
 	    if (!this.canBroadcast()) return;
 	    return this.sendReplyBox('Earn 5 money by making an account on github and following us: <br><a href="https://github.com/bandihub">bandi</a><br/><a href="https://github.com/CreaturePhil">CreaturePhil</a><br/><br/>Also earn another 5 money by starring our repository: <br/><a href="https://github.com/Nova-Team/Nova-Server">Nova-Server</a>');
 
-}
+	},
+	
 };
 
 
