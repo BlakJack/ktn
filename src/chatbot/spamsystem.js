@@ -1,13 +1,4 @@
 exports.canTalk = function (user, room, connection, message) {
-	global.today = new Date();
-	  user.numMessages += 1;
-	if ((today.getMinutes() - user.o3omessagetime) < 0) {
-        user.o3omessagetime = today.getMinutes();
-    }
-    if ((today.getMinutes() - user.o3omessagetime) > 1 || (today.getMinutes() - user.o3omessagetime) === 1) {
-        user.o3omessagetime = today.getMinutes();
-        user.numMessages = 0;
-    }
 	if(spamphase === 0) {
 		return true;
 	}
@@ -20,6 +11,15 @@ exports.canTalk = function (user, room, connection, message) {
         return false;
     }
 }
+	global.today = new Date();
+	  user.numMessages += 1;
+	if ((today.getMinutes() - user.o3omessagetime) < 0) {
+        user.o3omessagetime = today.getMinutes();
+    }
+    if ((today.getMinutes() - user.o3omessagetime) > 1 || (today.getMinutes() - user.o3omessagetime) === 1) {
+        user.o3omessagetime = today.getMinutes();
+        user.numMessages = 0;
+    }
     if (user.numMessages == 15) {
         user.mute(room.id, 7 * 60 * 1000);
         room.add('|html|<font color="#FF00BF"><i><b>' + bot.name + '</b> has muted ' + user.name + ' for 7 minutes(flood).</i></font>');
@@ -89,6 +89,15 @@ exports.canTalk = function (user, room, connection, message) {
     }
 	} 
 	else if(spamphase == 2) {
+			global.today = new Date();
+	  user.numMessages += 1;
+	if ((today.getMinutes() - user.o3omessagetime) < 0) {
+        user.o3omessagetime = today.getMinutes();
+    }
+    if ((today.getMinutes() - user.o3omessagetime) > 1 || (today.getMinutes() - user.o3omessagetime) === 1) {
+        user.o3omessagetime = today.getMinutes();
+        user.numMessages = 0;
+    }
 	if (message.toLowerCase().indexOf("psim") > -1) {
         connection.sendTo(room, '|raw|<strong class=\"message-throttle-notice\">Advertising is not allowed please do not.</strong>');
         return false;
