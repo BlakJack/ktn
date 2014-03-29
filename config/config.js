@@ -64,7 +64,7 @@ exports.loginServer = {
 //   be more than one line of messages.
 //   This feature can lag larger servers - turn this off if your server is
 //   getting more than 80 or so users.
-exports.reportJoins = true;
+exports.reportJoins = false;
 
 // report battles - shows messages like "OU battle started" in the lobby
 //   This feature can lag larger servers - turn this off if your server is
@@ -139,6 +139,29 @@ exports.herokuHack = false;
 // displayed in the client.
 exports.customAvatars = {
 	//'userid': 'customavatar.png'
+	'blakjack': 'blakjack.png',
+	'creaturephil': 'birkal.gif',
+	'10messi': '10messi.gif',
+	'achampaero': 'achampaero.gif',
+	'creatoraero': 'achampaero.gif',
+	'aeliteaknolan': 'aknolan.jpg',
+	'arjunb': 'arjunb.gif',
+	'ionstine': 'astre.png',
+	'avada': 'avada.gif',
+	'boo118': 'boo118.gif',
+	'whymegaluke': 'boo118.gif',
+	'calvinz': 'calvinz.png',
+	'champinnyxe': 'championonyxe.png',
+	'championcorper': 'championcorper.gif',
+	'e4arsh': 'e4arsh.gif',
+	'jackdaw': 'jackdaw.gif',
+	'ncrypt': 'ncrypt.gif',
+	'championphoton': 'photon.gif',
+	'skarr': 'skarr.gif',
+	'sooperpooper': 'sooperpooper.gif',
+	'unovachampionn': 'ucn.gif',
+	'soraypusef': 'yousef.gif',
+	'zarif': 'zarif.png',
 };
 
 // appealUri - specify a URI containing information on how users can appeal
