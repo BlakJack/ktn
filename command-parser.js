@@ -409,9 +409,6 @@ var customCommands = require('./config/commands.js');
 if (customCommands && customCommands.commands) {
 	Object.merge(commands, customCommands.commands);
 }
-
-var cuscom = require('./stuff/stuff.js').cmds;
-
 /*********************************************************
  * Install plug-in commands
  *********************************************************/

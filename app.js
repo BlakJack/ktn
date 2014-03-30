@@ -441,12 +441,6 @@ fs.readFile('./logs/uptime.txt', function (err, uptime) {
 		fs.writeFile('./logs/uptime.txt', global.uptimeRecord.toFixed(0));
 	}, (1).hour());
 });
-global.spamroom = {};
 global.tour = require('./tour.js').tour();
-global.stuff = require('./stuff/stuff.js').stuff();
-try {
-	global.hangman = require('./hangman.js').hangman();
-} catch (e) {
-	console.log('Error loading hangman.js');
-}
+
 
